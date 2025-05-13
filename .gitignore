@@ -1,0 +1,17 @@
+# === FRONTEND ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.vscode/
+
+# === BACKEND ===
+backend/node_modules/
+backend/.env
+
+# === GLOBAL ===
+.DS_Store
+*.log
+*.lock
+*.env

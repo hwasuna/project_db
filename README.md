@@ -37,4 +37,4 @@ npm run lint
 node server.js
 ```
 
-But you have to build the database locally first thanks to the file **DB_BoardGameApp** shared in the project 
+But you have to build the database locally first thanks to the file **DB_Advanced_Database.sql** shared in the project 

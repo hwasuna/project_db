@@ -7,8 +7,8 @@ CREATE TABLE User (
     Lastname VARCHAR(50) NOT NULL,
 	Username VARCHAR(50) NOT NULL,
     Email VARCHAR(100) UNIQUE NOT NULL,
-    Password VARCHAR(50) NOT NULL,
-    Role VARCHAR(50)
+    Password VARCHAR(100) NOT NULL,
+    Role VARCHAR(50) DEFAULT 'user'
 );
 
 

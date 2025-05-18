@@ -1,60 +1,60 @@
 <template>
   <div class="register-container">
-      <!-- Vidéo en arrière-plan -->
-      <video autoplay loop muted class="video-background">
-      </video>
-    
-      <!-- Rectangle de connexion -->
-      <div class="wrapper">
-        <form id="register-form" @submit.prevent="createAccount">
-          <h1>Create Your Account</h1>
-          <p>Fill in the details to register</p>
-          <div class="input-box">
-            <input type="text" v-model="firstname" placeholder="Your first name" required />
-          </div>
-          <div class="input-box">
-            <input type="text" v-model="lastname" placeholder="Your last Name" required />
-          </div>
-          <div class="input-box">
-            <input type="text" v-model="username" placeholder="Create a username" required />
-          </div>
-          <div class="input-box">
-            <input type="email" v-model="email" placeholder="Your email address" required />
-          </div>
-          <div class="input-box">
-            <input
-              :type="showPassword ? 'text' : 'password'"  
-              v-model="password"
-              placeholder="Create a password"
-              required
-            />
-            <i
-              class="fa-solid"
-              :class="showPassword ? 'fa-eye-slash' : 'fa-eye'" 
-              @click="togglePasswordVisibility"
-            ></i>
+    <!-- Rectangle de connexion -->
+    <div class="wrapper">
+      <form id="register-form" @submit.prevent="createAccount">
+        <h1>Create Your Account</h1>
+        <p>Fill in the details to register</p>
+        <div class="input-box">
+          <input type="text" v-model="firstname" placeholder="Your first name" required />
+        </div>
+        <div class="input-box">
+          <input type="text" v-model="lastname" placeholder="Your last Name" required />
+        </div>
+        <div class="input-box">
+          <input type="text" v-model="username" placeholder="Create a username" required />
+        </div>
+        <div class="input-box">
+          <input type="email" v-model="email" placeholder="Your email address" required />
         </div>
         <div class="input-box">
           <input
-            :type="showConfirmPassword ? 'text' : 'password'"  
-            v-model="confirm_password"
-            placeholder="Confirm your password"
+            :type="showPassword ? 'text' : 'password'"  
+            v-model="password"
+            placeholder="Create a password"
             required
           />
           <i
             class="fa-solid"
-            :class="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'" 
-            @click="toggleConfirmPasswordVisibility"
+            :class="showPassword ? 'fa-eye-slash' : 'fa-eye'" 
+            @click="togglePasswordVisibility"
           ></i>
-        </div>
-          <button  :disabled="!isFormValid" type="submit" class="action-btn">Register</button>
-          <p class="login-link">
-            Already have an account? <router-link to="/login">Log in</router-link>
-          </p>
-        </form>
       </div>
+      <div class="input-box">
+        <input
+          :type="showConfirmPassword ? 'text' : 'password'"  
+          v-model="confirm_password"
+          placeholder="Confirm your password"
+          required
+        />
+        <i
+          class="fa-solid"
+          :class="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'" 
+          @click="toggleConfirmPasswordVisibility"
+        ></i>
+      </div>
+        <button  :disabled="!isFormValid" type="submit" class="action-btn">Register</button>
+        <p class="login-link">
+          Already have an account? <router-link to="/login">Log in</router-link>
+        </p>
+      </form>
     </div>
-  </template>
+      <!-- Image side -->
+      <div class="image-container">
+        <img src="../assets/login-register.jpg" alt="Signup Image" />
+      </div> 
+  </div>
+</template>
 
 <script>
 import axios from "axios";
@@ -75,9 +75,9 @@ export default {
   computed: {
     isFormValid() {
       return (
-        this.username &&
         this.firstname &&
         this.lastname &&
+        this.username &&
         this.email &&
         this.password
       );
@@ -104,7 +104,7 @@ export default {
             password: this.password,
           });
 
-          const response = await axios.post("http://localhost:8081/register", {
+          const response = await axios.post("http://localhost:3000/", {
             username: this.username,
             firstname: this.firstname,
             lastname: this.lastname,
@@ -140,40 +140,25 @@ export default {
   /* Global container */
   .register-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
+    width: 100vw;
     position: relative;
     overflow: hidden;
   }
 
-  /* Background video */
-  .video-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the video fills the background */
-    z-index: -1; /* Puts video behind the content */
-  }
-
   /* Wrapper */
   .wrapper {
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-    border-radius: 15px;
-    padding: 30px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1.5s ease-in-out; /* Fade-in animation */
+    flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: fix;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1.5s ease-in-out; /* Fade-in animation */
     z-index: 1; /* Puts wrapper above the video */
-    margin-top: 8%;
   }
 
   /* Fade-in animation */
@@ -202,23 +187,23 @@ export default {
   }
 
   /* Form styling */
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  #register-form {
+    border-radius: 15px;
+    padding: 15%;
     width: 100%;
+    max-width: 40%;
   }
 
   /* Input fields */
   .input-box {
-    width: 100%;
     position: relative;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
   }
 
   .input-box input {
-    width: 95%;
+    width: 100%;
     padding: 10px 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -227,8 +212,8 @@ export default {
   }
 
   .input-box input:focus {
-    border-color: #910D00;
-    box-shadow: 0 0 8px rgba(201, 36, 10, 0.6);
+    border-color: #000000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     outline: none;
   }
   .input-box i {
@@ -244,8 +229,8 @@ export default {
   /* Button styling */
   .action-btn {
     width: 100%;
-    padding: 12px;
-    background: #910D00;
+    padding: 10px;
+    background: #000000;
     color: white;
     border: none;
     border-radius: 8px;
@@ -257,7 +242,7 @@ export default {
 
   .action-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(194, 37, 16, 0.4);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
   }
 
   .action-btn:active {
@@ -273,7 +258,7 @@ export default {
   }
 
   .login-link a {
-    color: #910D00;
+    color: #000000;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease, text-shadow 0.3s ease;
@@ -281,6 +266,20 @@ export default {
 
   .login-link a:hover {
     text-decoration: underline;
-    text-shadow: 0 0 5px rgba(212, 23, 16, 0.5);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
+
+  .image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = 'INSERT INTO users (username, firstname, lastname, email, password) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO User (username, firstname, lastname, email, password) VALUES (?, ?, ?, ?, ?)';
     db.query(sql, [username, firstname, lastname, email, hashedPassword], (err) => {
       if (err) {
         if (err.code === 'ER_DUP_ENTRY') {

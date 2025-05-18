@@ -40,6 +40,7 @@ body {
   margin: 0;
   background-color: white;
   color: white;
+  height: 100vh;
 }
 *{
   font-family: 'Banks Miles Single Line';

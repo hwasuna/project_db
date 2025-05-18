@@ -17,18 +17,15 @@
   
   <style scoped>
   .navbar {
-    position: fixed;         
-    top: 0;
-    left: 0;
-    width: 100vw;            
     background: black;
     color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     box-sizing: border-box;
-    z-index: 1000;           
+    position: relative; /* ❌ avoid fixed unless needed */
 }
   
   nav a {

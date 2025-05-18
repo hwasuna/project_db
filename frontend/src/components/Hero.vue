@@ -19,13 +19,11 @@
   
   <style scoped>
   .hero {
+    padding: 3rem 1rem;
+    background: #f5f5f5;
     text-align: center;
-    padding: 10rem 1rem;
-    background-color: #f5f5f5;
-    position: fixed;         
-    top: 0;
-    left: 0;
-    width: 100vw;            
+    margin: 0;         /* ✅ no top margin */
+    box-sizing: border-box;           
 
   }
   
@@ -39,10 +37,11 @@
   .search-container {
     display: inline-flex;
     align-items: center;
-    background-color: black;
+    background: black;
     border-radius: 50px;
     padding: 1rem 2rem;
     color: white;
+    margin-top: 2rem;
   }
   
   .search-icon {

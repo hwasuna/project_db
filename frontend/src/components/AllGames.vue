@@ -116,5 +116,6 @@ button:hover {
 
 h2 {
     text-align: center;
+    font-size: 3rem;
 }
   </style>

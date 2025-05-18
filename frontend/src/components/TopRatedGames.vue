@@ -127,4 +127,8 @@ export default {
   max-width: 400px;
   border-radius: 10px;
 }
+
+h2 {
+    font-size: 3rem;
+}
 </style>

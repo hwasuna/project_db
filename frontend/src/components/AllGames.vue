@@ -110,7 +110,11 @@ button:hover {
   padding: 2rem;
   border-radius: 10px;
   width: 90%;
-  max-width: 400px;
+  max-width: 800px;
   text-align: center;
+}
+
+h2 {
+    text-align: center;
 }
   </style>

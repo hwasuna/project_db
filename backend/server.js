@@ -66,6 +66,16 @@ app.get('/api/favorites', (req, res) => {
       res.json(results);
     });
   });
+
+  app.get("/api/toprated", (req, res) => {
+  db.query("SELECT * FROM View_TopRatedGames LIMIT 5", (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error fetching top rated games");
+    }
+    res.json(results);
+  });
+});
   
 
 const PORT = 4000;

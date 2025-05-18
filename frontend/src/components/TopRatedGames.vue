@@ -11,11 +11,11 @@
             v-for="(game, index) in visibleGames"
             :key="index"
           >
-            <img :src="game.image" :alt="game.title" />
             <p>
               <strong>{{ game.title }}</strong><br />
               {{ game.duration }}<br />
-              {{ game.players }}
+              {{ game.players }}<br />
+              ⭐ {{ game.rating.toFixed(1) }}
             </p>
           </div>
         </div>
@@ -31,74 +31,38 @@
     data() {
       return {
         currentIndex: 0,
-        games: [
-          {
-            title: 'Battleship',
-            image: '/battleship.png',
-            duration: '10–60 minutes',
-            players: '2 players'
-          },
-          {
-            title: 'Connect 4',
-            image: '/connect4.png',
-            duration: '10 minutes',
-            players: '2 players'
-          },
-          {
-            title: 'Clue',
-            image: '/clue.png',
-            duration: '10–60 minutes',
-            players: '3–6 players'
-          },
-          {
-            title: 'Jenga',
-            image: '/jenga.png',
-            duration: '15 minutes',
-            players: '2+ players'
-          },
-          {
-            title: 'Uno',
-            image: '/uno.png',
-            duration: '30 minutes',
-            players: '2–10 players'
-          },
-          {
-            title: 'Monopoly',
-            image: '/monopoly.png',
-            duration: '60–180 minutes',
-            players: '2–6 players'
-          },
-          {
-            title: 'Scrabble',
-            image: '/scrabble.png',
-            duration: '30–90 minutes',
-            players: '2–4 players'
-          }
-        ]
-      }
+        games: []
+      };
     },
     computed: {
       visibleGames() {
-        return this.games.slice(this.currentIndex, this.currentIndex + 3)
+        return this.games.slice(this.currentIndex, this.currentIndex + 3);
       }
     },
+    mounted() {
+      fetch("http://localhost:4000/api/top-games")
+        .then((res) => res.json())
+        .then((data) => {
+          this.games = data.map(game => ({
+            title: game.Name,
+            duration: `${game.YearPublished} edition`,
+            players: game.NbPlayers,
+            rating: game.AverageRating
+          }));
+        })
+        .catch(err => {
+          console.error("Failed to load top rated games:", err);
+        });
+    },
     methods: {
-      nextSlide() {
-        if (this.currentIndex >= this.games.length - 3) {
-          this.currentIndex = 0
-        } else {
-          this.currentIndex++
-        }
-      },
       prevSlide() {
-        if (this.currentIndex <= 0) {
-          this.currentIndex = this.games.length - 3
-        } else {
-          this.currentIndex--
-        }
+        if (this.currentIndex > 0) this.currentIndex--;
+      },
+      nextSlide() {
+        if (this.currentIndex + 3 < this.games.length) this.currentIndex++;
       }
     }
-  }
+  };
   </script>
   
   <style scoped>

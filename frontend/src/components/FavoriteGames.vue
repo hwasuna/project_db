@@ -1,77 +1,72 @@
 <template>
-    <section class="favorite">
-      <h3>MY FAVORITE GAMES</h3>
-      <div class="carousel-wrapper">
-        <button class="arrow" @click="prev">‹</button>
-        <div class="carousel">
-          <div class="game-card" v-for="game in visible" :key="game.title">
-            <img :src="game.image" />
-            <p><strong>{{ game.title }}</strong><br />{{ game.duration }}<br />{{ game.players }}</p>
-          </div>
+    <section class="favorite-section">
+      <h2>My Favorite Games</h2>
+      <div class="carousel">
+        <div
+          v-for="(game, index) in favoriteGames"
+          :key="index"
+          class="game-card"
+        >
+          <img :src="getImage(game.Name)" alt="Game Image" />
+          <h3>{{ game.Name }}</h3>
+          <p>{{ game.NbPlayers }}</p>
+          <p>{{ game.YearPublished }} minutes</p>
+          <p>⭐ {{ game.AverageRating.toFixed(1) }}</p>
         </div>
-        <button class="arrow" @click="next">›</button>
       </div>
     </section>
   </template>
   
   <script>
   export default {
-    name: 'FavoriteGames',
+    name: "FavoriteGames",
     data() {
       return {
-        current: 0,
-        games: [
-          { title: 'Battleship', image: '/battleship.png', duration: '10–60 minutes', players: '2 players' },
-          { title: 'Connect 4', image: '/connect4.png', duration: '10 minutes', players: '2 players' },
-          { title: 'Clue', image: '/clue.png', duration: '10–60 minutes', players: '3–6 players' }
-        ]
-      }
+        favoriteGames: [],
+      };
     },
-    computed: {
-      visible() {
-        return this.games.slice(this.current, this.current + 3)
-      }
+    mounted() {
+      fetch("http://localhost:4000/api/favorites")
+        .then((res) => res.json())
+        .then((data) => {
+          this.favoriteGames = data;
+        })
+        .catch((err) => {
+          console.error("Failed to load favorite games:", err);
+        });
     },
     methods: {
-      next() {
-        this.current = (this.current + 1) % this.games.length
+      getImage(name) {
+        const filename = name.toLowerCase().replace(/\s/g, "") + ".png";
+        return `/assets/Board Game_Images/${filename}`;
       },
-      prev() {
-        this.current = (this.current - 1 + this.games.length) % this.games.length
-      }
-    }
-  }
+    },
+  };
   </script>
   
   <style scoped>
-  .favorite {
-    background: black;
+  .favorite-section {
+    background-color: #000;
     color: white;
-    padding: 2rem 1rem;
     text-align: center;
+    padding: 2rem 1rem;
   }
-  .carousel-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
+  
   .carousel {
     display: flex;
+    justify-content: center;
     gap: 2rem;
+    flex-wrap: wrap;
   }
+  
   .game-card {
-    width: 160px;
+    width: 150px;
+    text-align: center;
   }
+  
   .game-card img {
     width: 100%;
-    border-radius: 6px;
-  }
-  .arrow {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    color: white;
-    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
   }
   </style>

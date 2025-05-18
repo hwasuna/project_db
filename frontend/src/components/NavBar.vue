@@ -3,7 +3,9 @@
       <h1>Board Right Away</h1>
       <nav>
         <router-link to="/">How It Works ?</router-link>
-        <router-link to="/register">Create An Event</router-link>
+        <!-- <router-link to="/register">Create An Event</router-link> -->
+        <router-link to="/register">Register</router-link>
+        <router-link to="/login">Login</router-link>
         <router-link to="/dashboard">My Space</router-link>
       </nav>
     </header>
@@ -25,7 +27,7 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    position: relative; /* ❌ avoid fixed unless needed */
+    position: relative; 
 }
   
   nav a {

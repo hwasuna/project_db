@@ -26,7 +26,7 @@
       <!-- Map Container -->
       <div class="map-container">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2563.768731606869!2d14.409299876771308!3d50.078354871524464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b94f39540fc6f%3A0x39aa166cc72e80b0!2sBubble%20Tea%2C%20Choisy!5e0!3m2!1sfr!2scz!4v1682711639330!5m2!1sfr!2scz"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d41952.060708281215!2d2.2944813!3d48.8588443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fdf1e9b4363%3A0x80c2c45c0f4f1b00!2sParis%2C%20France!5e0!3m2!1sfr!2sfr!4v1682712000000!5m2!1sfr!2sfr"
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
@@ -47,22 +47,57 @@ export default {
         postcode: '',
         phone: '',
         email: '',
-        game: ''
+        game: '',
+        organizerId:1,
       }
     }
   },
   methods: {
-    submitForm() {
-      console.log('Form Data:', this.form);
-      alert('Event Created!');
-      this.form.eventName='';
-      this.form.address= '';
-      this.form.city= '';
-      this.form.postcode= '';
-      this.form.phone= '';
-      this.form.email= '';
-      this.form.game= '';
+submitForm() {
+  const now = new Date();
+
+  const date = now.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  const time = now.toTimeString().split(' ')[0]; // "HH:MM:SS"
+
+  fetch('http://localhost:3000/event', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      address: this.form.address,
+      city: this.form.city,
+      postcode: this.form.postcode,
+      organizerId: this.form.organizerId,
+      date: date,
+      time: time,
+      userId: this.form.organizerId // or set separately if different
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Event created!');
+      this.form = {
+        eventName: '',
+        address: '',
+        city: '',
+        postcode: '',
+        phone: '',
+        email: '',
+        game: '',
+        organizerId: 1
+      };
+    } else {
+      alert('Erreur : ' + data.message);
     }
+  })
+  .catch(err => {
+    console.error('Erreur côté client :', err);
+    alert('Une erreur est survenue.');
+  });
+}
+
   }
 }
 </script>

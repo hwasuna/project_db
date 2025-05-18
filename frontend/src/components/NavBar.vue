@@ -4,7 +4,7 @@
       <nav>
         <router-link to="/">How It Works ?</router-link>
         <router-link to="/register">Create An Event</router-link>
-        <router-link to="/register">My Space</router-link>
+        <router-link to="/dashboard">My Space</router-link>
       </nav>
     </header>
   </template>

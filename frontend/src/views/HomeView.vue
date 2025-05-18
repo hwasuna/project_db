@@ -1,13 +1,13 @@
 <script setup>
-import NavBar from '@/components/NavBar.vue'
 import HeroSection from '@/components/Hero.vue'
 import TopRatedGames from '@/components/TopRatedGames.vue'
+import AllGames from '@/components/AllGames.vue'
 </script>
 
 <template>
     <div>
-        <NavBar/>
-        <HeroSection/>
-        <TopRatedGames/>
+        <HeroSection />
+        <TopRatedGames />
+        <AllGames />
     </div>
 </template>

@@ -1,109 +1,112 @@
 <template>
-    <section class="planned">
-      <h3>MY EVENTS PLANNED</h3>
-      <div class="cards">
-        <div class="event" v-for="(event, index) in events" :key="index">
-          <img :src="event.image" />
-          <p>
-            <strong>{{ event.title }}</strong><br />
-            {{ event.duration }}<br />
-            {{ event.players }}
-          </p>
-          <ul>
-            <li>📅 {{ event.date }}</li>
-            <li>🕕 {{ event.time }}</li>
-            <li>📍 {{ event.location }}</li>
-            <li>👥 {{ event.people.join(', ') }}</li>
-          </ul>
-          <button class="slots">{{ event.slots }} player left</button>
-        </div>
+  <section>
+    <h2>Planned Events</h2>
+    <div class="event-grid">
+      <div v-for="event in events" :key="event.EventID" class="event-card">
+        <h3>{{ event.GameName }}</h3>
+        <p><strong>Date:</strong> {{ event.EventDate }}</p>
+        <p><strong>Time:</strong> {{ event.EventTime }}</p>
+        <p><strong>Location:</strong> {{ event.Location }}</p>
+        <p><strong>Organizer:</strong> {{ event.Organizer }}</p>
+        <button class="details-button" @click="openModal(event)">See Details</button>
       </div>
-    </section>
-  </template>
-  
-  <script>
-  export default {
-    name: 'PlannedEvents',
-    data() {
-      return {
-        events: [
-          {
-            title: 'Operation',
-            image: '/operation.png',
-            duration: '10–60 minutes',
-            players: '2 players',
-            date: '07/05/2025',
-            time: '6pm',
-            location: 'Bde, 1st flr',
-            people: ['Rith', 'Hawa', 'Lina'],
-            slots: 1
-          },
-          {
-            title: 'Monopoly',
-            image: '/monopoly.png',
-            duration: '10–60 minutes',
-            players: '2 players',
-            date: '07/05/2025',
-            time: '6pm',
-            location: 'Bde, 1st flr',
-            people: ['Rith', 'Hawa', 'Lina'],
-            slots: 2
-          },
-          {
-            title: 'Jenga',
-            image: '/jenga.png',
-            duration: '10–60 minutes',
-            players: '2 players',
-            date: '07/05/2025',
-            time: '6pm',
-            location: 'Bde, 1st flr',
-            people: ['Rith', 'Hawa', 'Lina'],
-            slots: 4
-          }
-        ]
-      }
+    </div>
+
+    <div v-if="selectedEvent" class="modal" @click.self="selectedEvent = null">
+      <div class="modal-content">
+        <h3>{{ selectedEvent.GameName }}</h3>
+        <p><strong>Date:</strong> {{ selectedEvent.EventDate }}</p>
+        <p><strong>Time:</strong> {{ selectedEvent.EventTime }}</p>
+        <p><strong>Location:</strong> {{ selectedEvent.Location }}</p>
+        <p><strong>Organizer:</strong> {{ selectedEvent.Organizer }}</p>
+        <button @click="selectedEvent = null">Close</button>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  name: "PlannedEvents",
+  data() {
+    return {
+      events: [],
+      selectedEvent: null,
+    };
+  },
+  mounted() {
+    fetch("http://localhost:4000/api/events")
+      .then((res) => res.json())
+      .then((data) => {
+        this.events = data;
+      })
+      .catch((err) => {
+        console.error("Error fetching events:", err);
+      });
+  },
+  methods: {
+    openModal(event) {
+      this.selectedEvent = event;
     }
   }
-  </script>
-  
-  <style scoped>
-  .planned {
-    background: black;
-    color: white;
-    padding: 2rem 1rem;
-    text-align: center;
-  }
-  .cards {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .event {
-    background: white;
-    color: black;
-    border-radius: 10px;
-    padding: 1rem;
-    width: 200px;
-    text-align: left;
-  }
-  .event img {
-    width: 100%;
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0;
-  }
-  .slots {
-    background: black;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    width: 100%;
-    cursor: default;
-  }
-  </style>
+};
+</script>
+
+<style scoped>
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.event-card {
+  border: 2px solid black;
+  border-radius: 10px;
+  text-align: center;
+  padding: 1rem;
+  background: white;
+}
+
+.details-button {
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.details-button:hover {
+  background-color: #333;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+}
+</style>

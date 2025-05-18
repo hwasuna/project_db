@@ -37,36 +37,6 @@ app.get('/', (req, res) => {
     }
   });
 
-  // GET: Top 10 rated games
-app.get('/api/top-games', (req, res) => {
-    const query = 'SELECT * FROM View_TopRatedGames';
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error('Error fetching top-rated games:', err);
-        return res.status(500).json({ error: 'Database query failed' });
-      }
-      res.json(results);
-    });
-  });
-
-  // Top 5 highest-rated games
-app.get('/api/favorites', (req, res) => {
-    const sql = `
-      SELECT GameID, Name, Description, YearPublished, NbPlayers, AverageRating
-      FROM Game
-      WHERE AverageRating IS NOT NULL
-      ORDER BY AverageRating DESC
-      LIMIT 5
-    `;
-    db.query(sql, (err, results) => {
-      if (err) {
-        console.error("Error fetching favorite games:", err);
-        return res.status(500).json({ error: "Internal server error" });
-      }
-      res.json(results);
-    });
-  });
-
   app.get("/api/toprated", (req, res) => {
   db.query("SELECT * FROM View_TopRatedGames LIMIT 5", (err, results) => {
     if (err) {
@@ -74,6 +44,31 @@ app.get('/api/favorites', (req, res) => {
       return res.status(500).send("Error fetching top rated games");
     }
     res.json(results);
+  });
+});
+
+app.get("/api/events", (req, res) => {
+  db.query("SELECT * FROM View_AllEvents", (err, results) => {
+    if (err) {
+      console.error("Error fetching events:", err);
+      return res.status(500).json({ message: "Failed to retrieve events" });
+    }
+    res.json(results);
+  });
+});
+
+// server.js or routes/game.js
+app.get('/api/games/:id', (req, res) => {
+  const gameId = req.params.id;
+
+  const sql = 'SELECT * FROM Game WHERE GameID = ?';
+  db.query(sql, [gameId], (err, results) => {
+    if (err) {
+      console.error('Error fetching game:', err);
+      res.status(500).json({ error: 'Database error' });
+    } else {
+      res.json(results[0]);
+    }
   });
 });
   

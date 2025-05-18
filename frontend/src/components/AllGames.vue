@@ -2,19 +2,27 @@
     <section>
       <h2>See All Games</h2>
       <div class="games-grid">
-        <div v-for="game in games" :key="game.GameID" class="game-card">
-  <h3>{{ game.Name }}</h3>
-  <p><strong>Players:</strong> {{ game.NbPlayers }}</p>
-  <p><strong>Year:</strong> {{ game.YearPublished }}</p>
-  <p class="description">{{ game.Description.substring(0, 120) }}...</p>
-
-  <!-- Rating input -->
-  <select v-model="ratings[game.GameID]" class="rating-select">
-    <option disabled value="">Rate this game</option>
-    <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
-  </select>
-  <button @click="submitRating(game.GameID)">Submit Rating</button>
-</div>
+        <div
+          v-for="game in games"
+          :key="game.GameID"
+          class="game-card"
+        >
+          <h3>{{ game.Name }}</h3>
+          <p><strong>Year:</strong> {{ game.YearPublished }}</p>
+          <p><strong>{{ game.NbPlayers }}</strong></p>
+          <button @click="openModal(game)">See Details</button>
+        </div>
+      </div>
+  
+      <!-- Modal -->
+      <div v-if="selectedGame" class="modal-overlay" @click.self="closeModal">
+        <div class="modal-content">
+          <h2>{{ selectedGame.Name }}</h2>
+          <p><strong>Year:</strong> {{ selectedGame.YearPublished }}</p>
+          <p><strong>Players:</strong> {{ selectedGame.NbPlayers }}</p>
+          <p>{{ selectedGame.Description }}</p>
+          <button @click="closeModal">Close</button>
+        </div>
       </div>
     </section>
   </template>
@@ -25,88 +33,84 @@ export default {
   data() {
     return {
       games: [],
-      ratings: {}, // Holds selected rating per game
-      userID: 1     // TEMP: replace this with actual logged-in user ID later
+      selectedGame: null // stores the game to show in modal
     };
   },
   mounted() {
     fetch("http://localhost:4000/api/games")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         this.games = data;
+        console.log(this.games)
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to fetch games:", err);
       });
   },
   methods: {
-    async submitRating(gameID) {
-      const score = this.ratings[gameID];
-      if (!score) {
-        alert("Please select a rating.");
-        return;
-      }
-
-      try {
-        const res = await fetch("http://localhost:4000/api/rate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userID: this.userID,
-            gameID: gameID,
-            score: score
-          })
-        });
-
-        const result = await res.json();
-        alert(result.message || "Rating submitted successfully!");
-      } catch (err) {
-        console.error("Failed to submit rating:", err);
-        alert("Error submitting rating.");
-      }
+    openModal(game) {
+      this.selectedGame = game;
+    },
+    closeModal() {
+      this.selectedGame = null;
     }
   }
 };
 </script>
   
   <style scoped>
-
-.rating-select {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 0.3rem;
-  font-size: 0.9rem;
-}
-
   .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  justify-items: center;
 }
 
 .game-card {
-  width: 180px;
-  text-align: center;
-  background: transparent;
-}
-
-.game-card img {
-  width: 100%;
+  border: 2px solid black;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  width: 200px;
+  background-color: white;
+  text-align: center;
 }
 
-.game-card h3 {
-  margin: 0.5rem 0 0;
-  font-size: 1rem;
-  font-weight: bold;
+button {
+  margin-top: 0.5rem;
+  padding: 5px 10px;
+  border: none;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
 }
 
-.game-card p {
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
-  color: #000000;
+button:hover {
+  background-color: #333;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
 }
   </style>

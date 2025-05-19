@@ -1,17 +1,33 @@
 <template>
   <div id="app">
+    <!-- Header -->
+    <HeaderComponent ref="header" v-show="!scrolledPastHeader" />
+
+    <!-- Sticky Navbar -->
+    <StickyNavbarComponent :visible="scrolledPastHeader" />
+
 
     <!-- Route dynamique : le contenu dépend de la route active -->
     <router-view />
+
+
+    <!-- Sticky Navbar -->
+    <FooterComponent />
   </div>
 </template>
 
 <script>
-  
+  import HeaderComponent from "./components/HeaderComponent.vue";
+  import StickyNavbarComponent from "./components/StickyNavbarComponent.vue";
+  import FooterComponent from "@/components/HeaderComponent.vue";
 
+  
   export default {
     name: "App",
     components: {
+      HeaderComponent,
+      StickyNavbarComponent,
+      FooterComponent
     },
     data() {
       return {
@@ -45,4 +61,9 @@ body {
 *{
   font-family: 'Banks Miles Single Line';
 }
+#logo{
+  font-family:'Phosphate';
+  font-size: 2rem;
+}
+
 </style>

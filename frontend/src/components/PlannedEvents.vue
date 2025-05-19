@@ -4,7 +4,7 @@
     <div class="event-grid">
       <div v-for="event in events" :key="event.EventID" class="event-card">
         <h3>{{ event.GameName }}</h3>
-        <p><strong>Date:</strong> {{ event.EventDate }}</p>
+        <p><strong>Date:</strong> {{ new Date(event.EventDate).toISOString().split('T')[0] }}</p>
         <p><strong>Time:</strong> {{ event.EventTime }}</p>
         <p><strong>Location:</strong> {{ event.Location }}</p>
         <p><strong>Organizer:</strong> {{ event.Organizer }}</p>
@@ -15,7 +15,8 @@
     <div v-if="selectedEvent" class="modal" @click.self="selectedEvent = null">
       <div class="modal-content">
         <h3>{{ selectedEvent.GameName }}</h3>
-        <p><strong>Date:</strong> {{ selectedEvent.EventDate }}</p>
+        
+        <p><strong>Date:</strong> {{ new Date(selectedEvent.EventDate).toISOString().split('T')[0] }}</p>
         <p><strong>Time:</strong> {{ selectedEvent.EventTime }}</p>
         <p><strong>Location:</strong> {{ selectedEvent.Location }}</p>
         <p><strong>Organizer:</strong> {{ selectedEvent.Organizer }}</p>

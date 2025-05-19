@@ -106,7 +106,7 @@ export default {
 }
 
 .modal {
-    position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -124,7 +124,7 @@ export default {
   padding: 2rem;
   margin: 10% auto;
   width: 90%;
-  max-width: 400px;
+  max-width: 800px;
   border-radius: 10px;
 }
 

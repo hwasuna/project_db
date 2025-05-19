@@ -117,7 +117,8 @@
   }
   
   .suggestions {
-    position: absolute;
+    position: fix;
+    max-width: 400px;
     top: 100%;
     left: 0;
     right: 0;
@@ -129,7 +130,7 @@
     z-index: 10;
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 auto;
     border-radius: 20px;
   }
   
@@ -160,7 +161,7 @@
     padding: 1.5rem;
     border-radius: 12px;
     width: 90%;
-    max-width: 400px;
+    max-width: 800px;
     position: relative;
   }
   

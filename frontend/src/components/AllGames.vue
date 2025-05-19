@@ -20,7 +20,7 @@
           <h2>{{ selectedGame.Name }}</h2>
           <p><strong>Year:</strong> {{ selectedGame.YearPublished }}</p>
           <p><strong>Players:</strong> {{ selectedGame.NbPlayers }}</p>
-          <p>{{ selectedGame.Description }}</p>
+          <p><strong>Description:</strong><br><br>{{ selectedGame.Description }}</p>
           <button @click="closeModal">Close</button>
         </div>
       </div>

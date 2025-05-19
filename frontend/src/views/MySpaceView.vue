@@ -8,8 +8,8 @@ import PlannedEvents from '@/components/PlannedEvents.vue'
 <template>
   <div>
     <UserGreeting />
-    <FavoriteGames />
-    <PastGames />
+    <!-- <FavoriteGames />
+    <PastGames /> -->
     <PlannedEvents />
   </div>
 </template>

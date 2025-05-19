@@ -30,10 +30,10 @@ app.get('/', (req, res) => {
   
     try {
       await db.promise().query('CALL RateGame(?, ?, ?)', [userID, gameID, score]);
-      res.status(201).json({ message: 'Rating added successfully' });
+      res.status(201).json({ message: '✅ Rating added successfully' });
     } catch (err) {
       console.error('Rating failed:', err);
-      res.status(500).json({ error: 'Failed to rate game' });
+      res.status(500).json({ error: '❌ User already rated this game' });
     }
   });
 
@@ -71,7 +71,23 @@ app.get('/api/games/:id', (req, res) => {
     }
   });
 });
-  
+
+app.post('/api/events', (req, res) => {
+  const { EventDate, EventTime, Location, OrganizerID, UserID, GameID } = req.body;
+
+  const sql = `
+    INSERT INTO Event (EventDate, EventTime, Location, OrganizerID, UserID, GameID)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(sql, [EventDate, EventTime, Location, OrganizerID, UserID, GameID], (err, results) => {
+    if (err) {
+      console.error('Failed to insert event:', err);
+      return res.status(500).json({ error: 'Failed to create event' });
+    }
+    res.status(201).json({ message: '✅ Event created successfully', eventId: results.insertId });
+  });
+});
 
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)

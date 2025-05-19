@@ -19,6 +19,10 @@
           <input type="email" placeholder="E-mail" v-model="form.email" />
           <input type="text" placeholder="Game You'll Play" v-model="form.game" />
 
+          <!-- New date and time fields -->
+          <input type="date" v-model="form.date" />
+          <input type="time" v-model="form.time" />
+
           <button type="submit">CREATE MY EVENT</button>
         </form>
       </div>
@@ -48,58 +52,65 @@ export default {
         phone: '',
         email: '',
         game: '',
-        organizerId:1,
+        date: '',
+        time: '',
+        organizerId: 1
       }
-    }
+    };
   },
   methods: {
-submitForm() {
-  const now = new Date();
+    submitForm() {
+      if (!this.form.date || !this.form.time) {
+        alert('Please provide both date and time for the event.');
+        return;
+      }
 
-  const date = now.toISOString().split('T')[0]; // "YYYY-MM-DD"
-  const time = now.toTimeString().split(' ')[0]; // "HH:MM:SS"
-
-  fetch('http://localhost:3000/event', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      address: this.form.address,
-      city: this.form.city,
-      postcode: this.form.postcode,
-      organizerId: this.form.organizerId,
-      date: date,
-      time: time,
-      userId: this.form.organizerId // or set separately if different
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert('Event created!');
-      this.form = {
-        eventName: '',
-        address: '',
-        city: '',
-        postcode: '',
-        phone: '',
-        email: '',
-        game: '',
-        organizerId: 1
-      };
-    } else {
-      alert('Erreur : ' + data.message);
+      fetch('http://localhost:3000/event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          eventName: this.form.eventName,
+          address: this.form.address,
+          city: this.form.city,
+          postcode: this.form.postcode,
+          phone: this.form.phone,
+          email: this.form.email,
+          game: this.form.game,
+          date: this.form.date,
+          time: this.form.time,
+          organizerId: this.form.organizerId,
+          userId: this.form.organizerId
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Event created!');
+          this.form = {
+            eventName: '',
+            address: '',
+            city: '',
+            postcode: '',
+            phone: '',
+            email: '',
+            game: '',
+            date: '',
+            time: '',
+            organizerId: 1
+          };
+        } else {
+          alert('Error: ' + data.message);
+        }
+      })
+      .catch(err => {
+        console.error('Client-side error:', err);
+        alert('An unexpected error occurred.');
+      });
     }
-  })
-  .catch(err => {
-    console.error('Erreur côté client :', err);
-    alert('Une erreur est survenue.');
-  });
-}
-
   }
-}
+};
 </script>
 
 <style scoped>
@@ -183,5 +194,4 @@ button {
   height: 100%;
   border: none;
 }
-
 </style>

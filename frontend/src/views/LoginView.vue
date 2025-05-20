@@ -1,149 +1,100 @@
 <template>
-  <div class="login-page">
-
-    <!-- Login Form -->
-    <div class="wrapper">
-      <form id="login-form" @submit.prevent="login">
-        <h1>Welcome Back</h1>
-        <p>Log in to access your account</p>
-        <div class="input-box">
-          <input type="email" v-model="email" placeholder="Email" required />
-          <i class="fa-solid fa-user"></i>
-        </div>
-        <div class="input-box">
-          <input
-            :type="showPassword ? 'text' : 'password'"  
-            v-model="password"
-            placeholder="Password"
-            required
-          />
-          <i
-            class="fa-solid"
-            :class="showPassword ? 'fa-eye-slash' : 'fa-eye'" 
-            @click="togglePasswordVisibility"
-          ></i>
-        </div>
-        <div class="remember-forgot">
-          <label>
-            <input type="checkbox" v-model="rememberMe" />
-            Remember me
-          </label>
-          <a href="#" @click.prevent="forgotPassword">Forgot password?</a>
-        </div>
-        <button :disabled="!isFormValid" type="submit" class="action-btn">Login</button>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        <div class="register-link">
-          <p>
-            Don't have an account? <router-link to="/register">Register here</router-link>
-          </p>
-        </div>
+  <div class="register-container">
+    <div class="form-card">
+      <h1>Welcome Back!</h1>
+      <p>Please log into your account</p>
+      <form @submit.prevent="handleLogin">
+        <input type="email" v-model="email" placeholder="Email" required />
+        <input type="password" v-model="password" placeholder="Password" required />
+        <button type="submit">Log In</button>
       </form>
     </div>
-    <!-- Image side -->
-    <div class="image-container">
-      <img src="../assets/login-register.jpg" alt="Login Image" />
-    </div> 
   </div>
 </template>
 
-  
-  
 <script>
-import { loginUser } from '../eventBus'; // Importation de la gestion de l'état d'authentification
 export default {
+  name: "LoginView",
   data() {
     return {
-      email: '',
-      password: '',
-      showPassword: false, 
-      errorMessage: '',
+      email: "",
+      password: ""
     };
   },
-  computed: {
-    isFormValid() {
-      console.log("Reading data");
-      return this.email && this.password;
-      
-    },
-  },
   methods: {
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword; // Bascule l'état de l'affichage du mot de passe
-    },
-    async login() {
-      try {
-        console.log('Attempting login with:', { email: this.email}); // Debug log
-
-        const response = await fetch('http://localhost:3000/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
-        });
-
-        const data = await response.json();
-        console.log('Server response:', data); // Debug log
-
-        if (data.success) {
-          localStorage.setItem('authToken', data.token);
-
-          const payload = JSON.parse(atob(data.token.split('.')[1]));
-          loginUser(payload.username);
-
-          alert('Login successful!');
-          this.$router.push('/');
-        } else {
-          this.errorMessage = data.message || 'Invalid email or password.';
-        }
-      } catch (err) {
-        console.error('Login error:', err);
-        this.errorMessage = 'Error logging in. Please try again. Vue';
-      }
+    handleLogin() {
+      console.log("Login attempted with", this.email, this.password);
+      // Implement your login logic here
     }
-  },
+  }
 };
 </script>
 
-  
-  <style scoped>
-/* Global container */
-.login-page {
+<style scoped>
+.register-container {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  position: relative;
-  overflow: hidden; /* Ensures no scrolling */
-}
-
-
-/* Wrapper */
-.wrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: fix;
   align-items: center;
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 1.5s ease-in-out; /* Fade-in animation */
-  z-index: 1; /* Puts wrapper above the video */
+  height: 100vh;
+  background: linear-gradient(to right, #f5f7fa, #f8f8f8);
+  animation: fadeIn 1s ease-in-out;
 }
 
-/* Fade-in animation */
+.form-card {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.form-card h1 {
+  margin-bottom: 0.5rem;
+}
+
+.form-card p {
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #910D00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #333;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+<<<<<<< HEAD
 
 /* Title */
 h1 {
@@ -298,3 +249,6 @@ p {
   object-fit: cover;
 }
 </style>
+=======
+</style>
+>>>>>>> rith
